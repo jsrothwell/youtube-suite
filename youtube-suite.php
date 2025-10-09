@@ -59,7 +59,7 @@ class YouTube_Suite {
         YTS_Database::get_instance();
         YTS_Importer::get_instance();
         YTS_Comments::get_instance();
-        YTS_Engagement::get_instance();
+        YTS_Engagement_Module::get_instance();
         YTS_UX::get_instance();
         YTS_Gallery::get_instance();
         YTS_Admin::get_instance();
@@ -76,7 +76,7 @@ class YouTube_Suite {
             // API Settings
             'api_key' => '',
             'channel_id' => '',
-            
+
             // Import Settings
             'auto_import' => true,
             'import_frequency' => 'hourly',
@@ -86,7 +86,7 @@ class YouTube_Suite {
             'embed_video' => true,
             'set_featured_image' => true,
             'update_existing' => false,
-            
+
             // Gallery Settings
             'layout_type' => 'grid',
             'columns' => 3,
@@ -94,7 +94,7 @@ class YouTube_Suite {
             'show_title' => true,
             'show_date' => true,
             'show_duration' => true,
-            
+
             // Engagement Settings
             'enable_subscribe' => true,
             'enable_email_signup' => true,
@@ -102,7 +102,7 @@ class YouTube_Suite {
             'enable_analytics' => true,
             'email_double_optin' => false,
             'share_buttons' => array('facebook', 'twitter', 'linkedin'),
-            
+
             // UX Settings
             'lazy_load' => true,
             'responsive_embeds' => true,
@@ -110,7 +110,7 @@ class YouTube_Suite {
             'enable_notification' => true,
             'enable_keyboard' => true,
             'notification_duration' => 7,
-            
+
             // Comments Settings
             'enable_comments_sync' => false,
         );
