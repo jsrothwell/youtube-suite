@@ -109,6 +109,9 @@ class YTS_Social_Sharing {
             'pinterest' => 'https://pinterest.com/pin/create/button/?url=' . $url . '&media=' . $image . '&description=' . $title,
             'reddit' => 'https://reddit.com/submit?url=' . $url . '&title=' . $title,
             'whatsapp' => 'https://api.whatsapp.com/send?text=' . $title . '%20' . $url,
+            'bluesky' => 'https://bsky.app/intent/compose?text=' . $title . '%20' . $url,
+            'mastodon' => 'https://mastodonshare.com/?url=' . $url . '&text=' . $title,
+            'telegram' => 'https://t.me/share/url?url=' . $url . '&text=' . $title,
             'email' => 'mailto:?subject=' . $title . '&body=' . $url,
             'copy' => '#'
         );
@@ -120,6 +123,9 @@ class YTS_Social_Sharing {
             'pinterest' => 'Pinterest',
             'reddit' => 'Reddit',
             'whatsapp' => 'WhatsApp',
+            'bluesky' => 'Bluesky',
+            'mastodon' => 'Mastodon',
+            'telegram' => 'Telegram',
             'email' => 'Email',
             'copy' => 'Copy Link'
         );
@@ -132,6 +138,9 @@ class YTS_Social_Sharing {
             'pinterest' => 'fab fa-pinterest-p',
             'reddit' => 'fab fa-reddit-alien',
             'whatsapp' => 'fab fa-whatsapp',
+            'bluesky' => 'fas fa-cloud',
+            'mastodon' => 'fab fa-mastodon',
+            'telegram' => 'fab fa-telegram',
             'email' => 'fas fa-envelope',
             'copy' => 'fas fa-link'
         );

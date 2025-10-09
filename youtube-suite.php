@@ -123,7 +123,7 @@ class YouTube_Suite {
             'show_share_counts' => true,
             'enable_floating_share_bar' => true,
             'floating_bar_position' => 'left',
-            'share_networks' => array('facebook', 'twitter', 'linkedin', 'pinterest', 'email', 'copy'),
+            'share_networks' => array('facebook', 'twitter', 'bluesky', 'linkedin', 'reddit', 'telegram', 'email', 'copy'),
             'twitter_username' => '',
 
             // UX Settings

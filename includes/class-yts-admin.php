@@ -555,10 +555,13 @@ class YTS_Admin {
                                 if (!is_array($selected_networks)) $selected_networks = array();
                                 ?>
                                 <label><input type="checkbox" name="share_networks[]" value="facebook" <?php checked(in_array('facebook', $selected_networks)); ?>> 📘 Facebook</label><br>
-                                <label><input type="checkbox" name="share_networks[]" value="twitter" <?php checked(in_array('twitter', $selected_networks)); ?>> 🐦 Twitter</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="twitter" <?php checked(in_array('twitter', $selected_networks)); ?>> 🐦 Twitter (X)</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="bluesky" <?php checked(in_array('bluesky', $selected_networks)); ?>> ☁️ Bluesky</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="mastodon" <?php checked(in_array('mastodon', $selected_networks)); ?>> 🐘 Mastodon</label><br>
                                 <label><input type="checkbox" name="share_networks[]" value="linkedin" <?php checked(in_array('linkedin', $selected_networks)); ?>> 💼 LinkedIn</label><br>
-                                <label><input type="checkbox" name="share_networks[]" value="pinterest" <?php checked(in_array('pinterest', $selected_networks)); ?>> 📌 Pinterest</label><br>
                                 <label><input type="checkbox" name="share_networks[]" value="reddit" <?php checked(in_array('reddit', $selected_networks)); ?>> 🤖 Reddit</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="pinterest" <?php checked(in_array('pinterest', $selected_networks)); ?>> 📌 Pinterest</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="telegram" <?php checked(in_array('telegram', $selected_networks)); ?>> ✈️ Telegram</label><br>
                                 <label><input type="checkbox" name="share_networks[]" value="whatsapp" <?php checked(in_array('whatsapp', $selected_networks)); ?>> 💬 WhatsApp</label><br>
                                 <label><input type="checkbox" name="share_networks[]" value="email" <?php checked(in_array('email', $selected_networks)); ?>> ✉️ Email</label><br>
                                 <label><input type="checkbox" name="share_networks[]" value="copy" <?php checked(in_array('copy', $selected_networks)); ?>> 🔗 Copy Link</label>
