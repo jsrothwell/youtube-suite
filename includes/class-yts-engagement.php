@@ -1,5 +1,10 @@
 <?php
-/**
+// CACHE BUST v2.0
+if (!defined('ABSPATH')) exit;
+
+class YTS_Engagement {
+
+  /**
  * Engagement Features Module
  */
 
