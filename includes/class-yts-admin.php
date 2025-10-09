@@ -168,6 +168,9 @@ class YTS_Admin {
             <!-- Quick Actions -->
             <div class="yts-section">
                 <h2><?php _e('Quick Actions', 'youtube-suite'); ?></h2>
+                <p class="description" style="margin-bottom: 15px;">
+                    <?php _e('Import Videos: Fetches new videos from your YouTube channel. Refresh All: Updates ALL existing video posts with latest YouTube data (title, description, thumbnail).', 'youtube-suite'); ?>
+                </p>
                 <div class="yts-actions">
                     <form method="post" style="display: inline;">
                         <input type="hidden" name="yts_action" value="import_now">
@@ -223,12 +226,21 @@ class YTS_Admin {
         // Handle actions
         if (isset($_POST['yts_action'])) {
             if ($_POST['yts_action'] === 'import_now' && check_admin_referer('yts_import_now')) {
-                YTS_Importer::get_instance()->import_videos();
-                echo '<div class="notice notice-success"><p>' . __('Import completed!', 'youtube-suite') . '</p></div>';
+                $result = YTS_Importer::get_instance()->import_videos();
+                $message = sprintf(
+                    __('Import completed! New videos: %d, Updated: %d', 'youtube-suite'),
+                    $result['new'],
+                    $result['updated']
+                );
+                echo '<div class="notice notice-success"><p>' . $message . '</p></div>';
             }
             if ($_POST['yts_action'] === 'refresh_all' && check_admin_referer('yts_refresh_all')) {
-                YTS_Importer::get_instance()->refresh_all_posts();
-                echo '<div class="notice notice-success"><p>' . __('All posts refreshed!', 'youtube-suite') . '</p></div>';
+                $result = YTS_Importer::get_instance()->refresh_all_posts();
+                $message = sprintf(
+                    __('Refresh completed! %d posts updated with latest YouTube data.', 'youtube-suite'),
+                    $result['updated']
+                );
+                echo '<div class="notice notice-success"><p>' . $message . '</p></div>';
             }
         }
     }
@@ -248,6 +260,7 @@ class YTS_Admin {
                 'post_status' => sanitize_text_field($_POST['post_status']),
                 'embed_video' => isset($_POST['embed_video']),
                 'set_featured_image' => isset($_POST['set_featured_image']),
+                'update_existing' => isset($_POST['update_existing']),
 
                 // Gallery
                 'layout_type' => sanitize_text_field($_POST['layout_type']),
@@ -353,7 +366,8 @@ class YTS_Admin {
                             <th><?php _e('Options', 'youtube-suite'); ?></th>
                             <td>
                                 <label><input type="checkbox" name="embed_video" value="1" <?php checked($g('embed_video'), 1); ?>> <?php _e('Embed video in post', 'youtube-suite'); ?></label><br>
-                                <label><input type="checkbox" name="set_featured_image" value="1" <?php checked($g('set_featured_image'), 1); ?>> <?php _e('Set featured image', 'youtube-suite'); ?></label>
+                                <label><input type="checkbox" name="set_featured_image" value="1" <?php checked($g('set_featured_image'), 1); ?>> <?php _e('Set featured image', 'youtube-suite'); ?></label><br>
+                                <label><input type="checkbox" name="update_existing" value="1" <?php checked($g('update_existing'), 1); ?>> <?php _e('Update existing posts when re-importing', 'youtube-suite'); ?></label>
                             </td>
                         </tr>
                     </table>
