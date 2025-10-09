@@ -18,20 +18,32 @@ class YTS_Admin {
     }
 
     private function __construct() {
-      // --- ADD THIS LINE FOR TESTING ---
-    error_log('*** YTS_Admin class is being loaded ***');
-    // ---------------------------------
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('admin_init', array($this, 'register_settings'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
+        add_action('admin_notices', array($this, 'check_database_status'));
+    }
+
+    /**
+     * Check database status and show notice if tables are missing
+     */
+    public function check_database_status() {
+        $screen = get_current_screen();
+        if (strpos($screen->id, 'youtube-suite') === false) {
+            return;
+        }
+
+        $db = YTS_Database::get_instance();
+        if (!$db->tables_exist()) {
+            echo '<div class="notice notice-warning is-dismissible">';
+            echo '<p><strong>YouTube Suite:</strong> Database tables are missing. ';
+            echo '<a href="' . admin_url('admin.php?page=youtube-suite&action=repair_db') . '" class="button button-small">Repair Database</a>';
+            echo '</p></div>';
+        }
     }
 
     public function add_admin_menu() {
-      // --- ADD THIS LINE ---
-  trigger_error("MENU FUNCTION STARTED", E_USER_WARNING);
-  // ---------------------
-
-  // Main menu
+        // Main menu
         add_menu_page(
             __('YouTube Suite', 'youtube-suite'),
             __('YouTube Suite', 'youtube-suite'),
@@ -112,6 +124,12 @@ class YTS_Admin {
     }
 
     public function render_dashboard() {
+        // Handle database repair
+        if (isset($_GET['action']) && $_GET['action'] === 'repair_db' && current_user_can('manage_options')) {
+            YTS_Database::create_tables();
+            echo '<div class="notice notice-success is-dismissible"><p>' . __('Database tables created successfully!', 'youtube-suite') . '</p></div>';
+        }
+
         $db = YTS_Database::get_instance();
         $active_subscribers = $db->get_subscriber_count('active');
         $total_videos = wp_count_posts('post')->publish;
@@ -166,6 +184,10 @@ class YTS_Admin {
                             ♻️ <?php _e('Refresh All Posts', 'youtube-suite'); ?>
                         </button>
                     </form>
+
+                    <a href="<?php echo admin_url('admin.php?page=youtube-suite&action=repair_db'); ?>" class="button">
+                        🔧 <?php _e('Repair Database', 'youtube-suite'); ?>
+                    </a>
 
                     <a href="<?php echo admin_url('admin.php?page=youtube-suite-settings'); ?>" class="button">
                         ⚙️ <?php _e('Settings', 'youtube-suite'); ?>

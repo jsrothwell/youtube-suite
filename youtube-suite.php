@@ -31,6 +31,7 @@ class YouTube_Suite {
     private function __construct() {
         $this->load_dependencies();
         $this->init_hooks();
+        $this->init(); // Initialize modules immediately
     }
 
     private function load_dependencies() {
@@ -49,8 +50,6 @@ class YouTube_Suite {
     private function init_hooks() {
         register_activation_hook(__FILE__, array($this, 'activate'));
         register_deactivation_hook(__FILE__, array($this, 'deactivate'));
-
-        add_action('plugins_loaded', array($this, 'init'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
     }
 
@@ -207,5 +206,3 @@ function yts_format_duration($duration) {
     $formatted .= isset($time_parts[0]) ? str_pad($time_parts[0], 2, '0', STR_PAD_LEFT) : '00';
     return $formatted;
 }
-
-if (class_exists('YTS_Admin')) YTS_Admin::get_instance();

@@ -22,8 +22,35 @@ class YTS_Database {
         global $wpdb;
         $this->subscribers_table = $wpdb->prefix . 'yts_subscribers';
         $this->analytics_table = $wpdb->prefix . 'yts_analytics';
+        
+        // Auto-check and create tables if needed
+        add_action('admin_init', array($this, 'check_tables'));
     }
 
+    /**
+     * Check if tables exist and create them if they don't
+     */
+    public function check_tables() {
+        if (!$this->tables_exist()) {
+            $this->create_tables();
+        }
+    }
+
+    /**
+     * Check if both required tables exist
+     */
+    public function tables_exist() {
+        global $wpdb;
+        
+        $subscribers_exists = $wpdb->get_var("SHOW TABLES LIKE '{$this->subscribers_table}'") === $this->subscribers_table;
+        $analytics_exists = $wpdb->get_var("SHOW TABLES LIKE '{$this->analytics_table}'") === $this->analytics_table;
+        
+        return $subscribers_exists && $analytics_exists;
+    }
+
+    /**
+     * Create database tables
+     */
     public static function create_tables() {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
@@ -61,6 +88,9 @@ class YTS_Database {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_subscribers);
         dbDelta($sql_analytics);
+        
+        // Log table creation
+        error_log('YouTube Suite: Database tables created/verified');
     }
 
     // Subscriber methods
