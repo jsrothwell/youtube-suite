@@ -183,24 +183,18 @@
 /* Network Colors - Flat Style */
 .yts-style-flat .yts-share-facebook { background: #1877f2; }
 .yts-style-flat .yts-share-twitter { background: #1da1f2; }
-.yts-style-flat .yts-share-bluesky { background: #0085ff; }
-.yts-style-flat .yts-share-mastodon { background: #6364ff; }
 .yts-style-flat .yts-share-linkedin { background: #0077b5; }
 .yts-style-flat .yts-share-pinterest { background: #e60023; }
 .yts-style-flat .yts-share-reddit { background: #ff4500; }
-.yts-style-flat .yts-share-telegram { background: #0088cc; }
 .yts-style-flat .yts-share-whatsapp { background: #25d366; }
 .yts-style-flat .yts-share-email { background: #7f7f7f; }
 .yts-style-flat .yts-share-copy { background: #6c757d; }
 
 .yts-style-flat .yts-share-facebook:hover { background: #145dbf; }
 .yts-style-flat .yts-share-twitter:hover { background: #1a8cd8; }
-.yts-style-flat .yts-share-bluesky:hover { background: #006acc; }
-.yts-style-flat .yts-share-mastodon:hover { background: #4a4bcc; }
 .yts-style-flat .yts-share-linkedin:hover { background: #005885; }
 .yts-style-flat .yts-share-pinterest:hover { background: #bd001c; }
 .yts-style-flat .yts-share-reddit:hover { background: #cc3700; }
-.yts-style-flat .yts-share-telegram:hover { background: #0077b3; }
 .yts-style-flat .yts-share-whatsapp:hover { background: #1da851; }
 .yts-style-flat .yts-share-email:hover { background: #5a5a5a; }
 .yts-style-flat .yts-share-copy:hover { background: #545b62; }
@@ -208,12 +202,9 @@
 /* Network Colors - Gradient Style */
 .yts-style-gradient .yts-share-facebook { background: linear-gradient(135deg, #1877f2 0%, #145dbf 100%); }
 .yts-style-gradient .yts-share-twitter { background: linear-gradient(135deg, #1da1f2 0%, #1a8cd8 100%); }
-.yts-style-gradient .yts-share-bluesky { background: linear-gradient(135deg, #0085ff 0%, #006acc 100%); }
-.yts-style-gradient .yts-share-mastodon { background: linear-gradient(135deg, #6364ff 0%, #4a4bcc 100%); }
 .yts-style-gradient .yts-share-linkedin { background: linear-gradient(135deg, #0077b5 0%, #005885 100%); }
 .yts-style-gradient .yts-share-pinterest { background: linear-gradient(135deg, #e60023 0%, #bd001c 100%); }
 .yts-style-gradient .yts-share-reddit { background: linear-gradient(135deg, #ff4500 0%, #cc3700 100%); }
-.yts-style-gradient .yts-share-telegram { background: linear-gradient(135deg, #0088cc 0%, #0077b3 100%); }
 .yts-style-gradient .yts-share-whatsapp { background: linear-gradient(135deg, #25d366 0%, #1da851 100%); }
 .yts-style-gradient .yts-share-email { background: linear-gradient(135deg, #7f7f7f 0%, #5a5a5a 100%); }
 .yts-style-gradient .yts-share-copy { background: linear-gradient(135deg, #6c757d 0%, #545b62 100%); }
@@ -221,12 +212,9 @@
 /* Network Colors - Outlined Style */
 .yts-style-outlined .yts-share-facebook { color: #1877f2; }
 .yts-style-outlined .yts-share-twitter { color: #1da1f2; }
-.yts-style-outlined .yts-share-bluesky { color: #0085ff; }
-.yts-style-outlined .yts-share-mastodon { color: #6364ff; }
 .yts-style-outlined .yts-share-linkedin { color: #0077b5; }
 .yts-style-outlined .yts-share-pinterest { color: #e60023; }
 .yts-style-outlined .yts-share-reddit { color: #ff4500; }
-.yts-style-outlined .yts-share-telegram { color: #0088cc; }
 .yts-style-outlined .yts-share-whatsapp { color: #25d366; }
 .yts-style-outlined .yts-share-email { color: #7f7f7f; }
 .yts-style-outlined .yts-share-copy { color: #6c757d; }
