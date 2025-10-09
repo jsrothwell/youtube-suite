@@ -33,6 +33,9 @@ class YTS_Single_Post {
         $show_description = YouTube_Suite::get_setting('show_video_description', true);
         $show_related = YouTube_Suite::get_setting('show_related_videos', false);
 
+        // Remove any existing video embeds from content to prevent duplicates
+        $content = $this->remove_existing_video_embeds($content, $video_id);
+
         // Build the video embed
         $video_html = $this->get_video_embed($video_id, $video_size);
 
@@ -43,7 +46,7 @@ class YTS_Single_Post {
 
         // Add video description if enabled
         if ($show_description) {
-            $video_html .= $this->get_video_description();
+            $video_html .= $this->get_video_description($content);
         }
 
         // Add related videos if enabled
@@ -62,6 +65,25 @@ class YTS_Single_Post {
             default:
                 return $video_html . $content;
         }
+    }
+
+    /**
+     * Remove existing video embeds from content to prevent duplicates
+     */
+    private function remove_existing_video_embeds($content, $video_id) {
+        // Remove YouTube iframes
+        $content = preg_replace('/<iframe[^>]*youtube\.com\/embed\/' . preg_quote($video_id, '/') . '[^>]*>.*?<\/iframe>/is', '', $content);
+        
+        // Remove video wrapper divs
+        $content = preg_replace('/<div class="yts-video-embed">.*?<\/div>/is', '', $content);
+        
+        // Remove any standalone YouTube embeds
+        $content = preg_replace('/<iframe[^>]*youtube\.com[^>]*>.*?<\/iframe>/is', '', $content);
+        
+        // Clean up any extra whitespace
+        $content = preg_replace('/\n\s*\n\s*\n/', "\n\n", $content);
+        
+        return trim($content);
     }
 
     private function get_video_embed($video_id, $size) {
@@ -109,12 +131,20 @@ class YTS_Single_Post {
         return $html;
     }
 
-    private function get_video_description() {
-        $content = get_the_content();
+    private function get_video_description($content = '') {
+        // If content wasn't passed, get it
+        if (empty($content)) {
+            $content = get_the_content();
+        }
         
         // Extract description from content if it was wrapped in a div
         if (preg_match('/<div class="yts-video-description">(.*?)<\/div>/s', $content, $matches)) {
             return '<div class="yts-video-description-section">' . $matches[1] . '</div>';
+        }
+        
+        // Otherwise, use the remaining content as description if it exists
+        if (!empty($content) && strlen(strip_tags($content)) > 50) {
+            return '<div class="yts-video-description-section"><h4>' . __('About this video', 'youtube-suite') . '</h4>' . wpautop($content) . '</div>';
         }
         
         return '';
