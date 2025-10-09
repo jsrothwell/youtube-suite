@@ -42,6 +42,7 @@ class YouTube_Suite {
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-engagement.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-ux.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-gallery.php';
+        require_once YTS_PLUGIN_DIR . 'includes/class-yts-single-post.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-admin.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-blocks.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-ajax.php';
@@ -61,6 +62,7 @@ class YouTube_Suite {
         YTS_Engagement_Module::get_instance();
         YTS_UX::get_instance();
         YTS_Gallery::get_instance();
+        YTS_Single_Post::get_instance();
         YTS_Admin::get_instance();
         YTS_Blocks::get_instance();
         YTS_Ajax::get_instance();
@@ -93,6 +95,17 @@ class YouTube_Suite {
             'show_title' => true,
             'show_date' => true,
             'show_duration' => true,
+            'show_thumbnails' => true,
+            'show_video_title' => true,
+            'show_video_date' => true,
+
+            // Single Post Settings
+            'single_video_size' => 'large',
+            'single_video_position' => 'top',
+            'show_video_details' => true,
+            'show_video_description' => true,
+            'show_related_videos' => false,
+            'related_videos_count' => 3,
 
             // Engagement Settings
             'enable_subscribe' => true,

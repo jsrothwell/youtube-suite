@@ -266,6 +266,17 @@ class YTS_Admin {
                 'layout_type' => sanitize_text_field($_POST['layout_type']),
                 'columns' => intval($_POST['columns']),
                 'videos_per_page' => intval($_POST['videos_per_page']),
+                'show_thumbnails' => isset($_POST['show_thumbnails']),
+                'show_video_title' => isset($_POST['show_video_title']),
+                'show_video_date' => isset($_POST['show_video_date']),
+                
+                // Single Post
+                'single_video_size' => sanitize_text_field($_POST['single_video_size']),
+                'single_video_position' => sanitize_text_field($_POST['single_video_position']),
+                'show_video_details' => isset($_POST['show_video_details']),
+                'show_video_description' => isset($_POST['show_video_description']),
+                'show_related_videos' => isset($_POST['show_related_videos']),
+                'related_videos_count' => intval($_POST['related_videos_count']),
 
                 // Engagement
                 'enable_subscribe' => isset($_POST['enable_subscribe']),
@@ -306,6 +317,7 @@ class YTS_Admin {
                     <button type="button" class="yts-tab active" data-tab="api">🔑 API</button>
                     <button type="button" class="yts-tab" data-tab="import">📥 Import</button>
                     <button type="button" class="yts-tab" data-tab="gallery">🎨 Gallery</button>
+                    <button type="button" class="yts-tab" data-tab="single">📺 Single Post</button>
                     <button type="button" class="yts-tab" data-tab="engagement">💬 Engagement</button>
                     <button type="button" class="yts-tab" data-tab="ux">✨ UX</button>
                     <button type="button" class="yts-tab" data-tab="comments">💭 Comments</button>
@@ -375,6 +387,8 @@ class YTS_Admin {
 
                 <!-- Gallery Settings -->
                 <div class="yts-tab-content" data-tab="gallery">
+                    <h3><?php _e('Gallery Display Settings', 'youtube-suite'); ?></h3>
+                    <p class="description"><?php _e('Configure how video galleries appear on archive pages and when using the [youtube_gallery] shortcode.', 'youtube-suite'); ?></p>
                     <table class="form-table">
                         <tr>
                             <th><?php _e('Layout Type', 'youtube-suite'); ?></th>
@@ -384,6 +398,7 @@ class YTS_Admin {
                                     <option value="carousel" <?php selected($g('layout_type', 'grid'), 'carousel'); ?>><?php _e('Carousel', 'youtube-suite'); ?></option>
                                     <option value="list" <?php selected($g('layout_type', 'grid'), 'list'); ?>><?php _e('List', 'youtube-suite'); ?></option>
                                 </select>
+                                <p class="description"><?php _e('Choose how videos are displayed in galleries', 'youtube-suite'); ?></p>
                             </td>
                         </tr>
                         <tr>
@@ -394,12 +409,78 @@ class YTS_Admin {
                                     <option value="3" <?php selected($g('columns', 3), 3); ?>>3</option>
                                     <option value="4" <?php selected($g('columns', 3), 4); ?>>4</option>
                                 </select>
+                                <p class="description"><?php _e('Number of columns in grid layout', 'youtube-suite'); ?></p>
                             </td>
                         </tr>
                         <tr>
                             <th><?php _e('Videos Per Page', 'youtube-suite'); ?></th>
                             <td>
                                 <input type="number" name="videos_per_page" value="<?php echo esc_attr($g('videos_per_page', 12)); ?>" min="1" max="50">
+                                <p class="description"><?php _e('Number of videos to display per page', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Display Options', 'youtube-suite'); ?></th>
+                            <td>
+                                <label><input type="checkbox" name="show_thumbnails" value="1" <?php checked($g('show_thumbnails', true), 1); ?>> <?php _e('Show Thumbnails', 'youtube-suite'); ?></label><br>
+                                <label><input type="checkbox" name="show_video_title" value="1" <?php checked($g('show_video_title', true), 1); ?>> <?php _e('Show Video Titles', 'youtube-suite'); ?></label><br>
+                                <label><input type="checkbox" name="show_video_date" value="1" <?php checked($g('show_video_date', true), 1); ?>> <?php _e('Show Publish Date', 'youtube-suite'); ?></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Single Post Settings -->
+                <div class="yts-tab-content" data-tab="single">
+                    <h3><?php _e('Single Post Video Display', 'youtube-suite'); ?></h3>
+                    <p class="description"><?php _e('Configure how videos appear on individual post pages.', 'youtube-suite'); ?></p>
+                    <table class="form-table">
+                        <tr>
+                            <th><?php _e('Video Size', 'youtube-suite'); ?></th>
+                            <td>
+                                <select name="single_video_size">
+                                    <option value="small" <?php selected($g('single_video_size', 'large'), 'small'); ?>><?php _e('Small (560x315)', 'youtube-suite'); ?></option>
+                                    <option value="medium" <?php selected($g('single_video_size', 'large'), 'medium'); ?>><?php _e('Medium (720x405)', 'youtube-suite'); ?></option>
+                                    <option value="large" <?php selected($g('single_video_size', 'large'), 'large'); ?>><?php _e('Large (960x540)', 'youtube-suite'); ?></option>
+                                    <option value="full" <?php selected($g('single_video_size', 'large'), 'full'); ?>><?php _e('Full Width (100%)', 'youtube-suite'); ?></option>
+                                </select>
+                                <p class="description"><?php _e('Choose the video player size for single posts', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Video Position', 'youtube-suite'); ?></th>
+                            <td>
+                                <select name="single_video_position">
+                                    <option value="top" <?php selected($g('single_video_position', 'top'), 'top'); ?>><?php _e('Top of Content', 'youtube-suite'); ?></option>
+                                    <option value="bottom" <?php selected($g('single_video_position', 'top'), 'bottom'); ?>><?php _e('Bottom of Content', 'youtube-suite'); ?></option>
+                                    <option value="replace" <?php selected($g('single_video_position', 'top'), 'replace'); ?>><?php _e('Replace Content (Video Only)', 'youtube-suite'); ?></option>
+                                </select>
+                                <p class="description"><?php _e('Where to display the video in relation to post content', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Video Details', 'youtube-suite'); ?></th>
+                            <td>
+                                <label><input type="checkbox" name="show_video_details" value="1" <?php checked($g('show_video_details', true), 1); ?>> <?php _e('Show video metadata (duration, views, etc.)', 'youtube-suite'); ?></label>
+                                <p class="description"><?php _e('Display additional information about the video', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Video Description', 'youtube-suite'); ?></th>
+                            <td>
+                                <label><input type="checkbox" name="show_video_description" value="1" <?php checked($g('show_video_description', true), 1); ?>> <?php _e('Show YouTube description below video', 'youtube-suite'); ?></label>
+                                <p class="description"><?php _e('Display the original YouTube video description', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Related Videos', 'youtube-suite'); ?></th>
+                            <td>
+                                <label><input type="checkbox" name="show_related_videos" value="1" <?php checked($g('show_related_videos'), 1); ?>> <?php _e('Show related videos from your channel', 'youtube-suite'); ?></label><br>
+                                <label style="margin-top: 10px; display: inline-block;">
+                                    <?php _e('Number of related videos:', 'youtube-suite'); ?>
+                                    <input type="number" name="related_videos_count" value="<?php echo esc_attr($g('related_videos_count', 3)); ?>" min="1" max="12" style="width: 60px;">
+                                </label>
+                                <p class="description"><?php _e('Display other videos from your channel at the bottom of the post', 'youtube-suite'); ?></p>
                             </td>
                         </tr>
                     </table>
