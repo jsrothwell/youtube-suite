@@ -1,0 +1,321 @@
+/* ===== INLINE SHARE BUTTONS ===== */
+.yts-share-buttons {
+    margin: 30px 0;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    clear: both;
+}
+
+.yts-share-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.yts-share-label {
+    font-weight: 600;
+    color: #333;
+    margin-right: 10px;
+}
+
+.yts-share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.yts-share-icon {
+    font-size: 18px;
+}
+
+.yts-share-text {
+    font-size: 14px;
+}
+
+.yts-share-count {
+    background: rgba(0,0,0,0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+/* Flat Style */
+.yts-style-flat .yts-share-button {
+    background: #555;
+    color: white;
+}
+
+.yts-style-flat .yts-share-button:hover {
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Gradient Style */
+.yts-style-gradient .yts-share-button {
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.yts-style-gradient .yts-share-button:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px);
+}
+
+/* Outlined Style */
+.yts-style-outlined .yts-share-button {
+    background: transparent;
+    border: 2px solid currentColor;
+}
+
+.yts-style-outlined .yts-share-button:hover {
+    background: currentColor;
+    color: white;
+}
+
+/* Network Colors */
+.yts-share-facebook { color: #1877f2; }
+.yts-share-twitter { color: #1da1f2; }
+.yts-share-linkedin { color: #0077b5; }
+.yts-share-pinterest { color: #e60023; }
+.yts-share-reddit { color: #ff4500; }
+.yts-share-whatsapp { color: #25d366; }
+.yts-share-email { color: #666; }
+.yts-share-copy { color: #999; }
+
+.yts-style-flat .yts-share-facebook { background: #1877f2; }
+.yts-style-flat .yts-share-twitter { background: #1da1f2; }
+.yts-style-flat .yts-share-linkedin { background: #0077b5; }
+.yts-style-flat .yts-share-pinterest { background: #e60023; }
+.yts-style-flat .yts-share-reddit { background: #ff4500; }
+.yts-style-flat .yts-share-whatsapp { background: #25d366; }
+.yts-style-flat .yts-share-email { background: #666; }
+.yts-style-flat .yts-share-copy { background: #999; }
+
+/* ===== FLOATING SHARE BAR ===== */
+.yts-floating-share-bar {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 9999;
+    transition: opacity 0.3s ease;
+}
+
+.yts-floating-left {
+    left: 0;
+}
+
+.yts-floating-right {
+    right: 0;
+}
+
+.yts-floating-share-bar .yts-share-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: white;
+    padding: 15px 10px;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    margin: 0;
+}
+
+.yts-floating-right .yts-share-buttons {
+    border-radius: 8px 0 0 8px;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+}
+
+.yts-floating-share-bar .yts-share-button {
+    padding: 12px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 60px;
+}
+
+.yts-floating-share-bar .yts-share-icon {
+    font-size: 24px;
+}
+
+.yts-floating-share-bar .yts-share-text {
+    font-size: 11px;
+    text-align: center;
+}
+
+.yts-floating-share-bar .yts-share-count {
+    font-size: 11px;
+    background: rgba(0,0,0,0.1);
+    padding: 2px 6px;
+    border-radius: 8px;
+    margin: 0;
+}
+
+/* Hide floating bar on mobile */
+@media (max-width: 768px) {
+    .yts-floating-share-bar {
+        display: none;
+    }
+}
+
+/* ===== CLICK TO TWEET ===== */
+.yts-click-to-tweet {
+    background: #e8f4f8;
+    border-left: 4px solid #1da1f2;
+    padding: 25px;
+    margin: 30px 0;
+    border-radius: 8px;
+    position: relative;
+}
+
+.yts-ctt-text {
+    font-size: 18px;
+    line-height: 1.6;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.yts-ctt-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1da1f2;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s ease;
+}
+
+.yts-ctt-button:hover {
+    background: #1a8cd8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(29,161,242,0.3);
+}
+
+/* Alternative Click to Tweet Styles */
+.yts-ctt-minimal {
+    background: transparent;
+    border: 2px solid #1da1f2;
+    padding: 20px;
+}
+
+.yts-ctt-bold {
+    background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%);
+    color: white;
+}
+
+.yts-ctt-bold .yts-ctt-text {
+    color: white;
+}
+
+.yts-ctt-bold .yts-ctt-button {
+    background: white;
+    color: #1da1f2;
+}
+
+.yts-ctt-bold .yts-ctt-button:hover {
+    background: #f0f0f0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .yts-share-inline {
+        justify-content: center;
+    }
+    
+    .yts-share-button {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+    
+    .yts-share-text {
+        display: none;
+    }
+    
+    .yts-share-icon {
+        font-size: 20px;
+    }
+    
+    .yts-click-to-tweet {
+        padding: 20px 15px;
+    }
+    
+    .yts-ctt-text {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .yts-share-buttons {
+        padding: 15px;
+    }
+    
+    .yts-share-button {
+        padding: 10px;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes yts-share-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.yts-share-button.yts-shared {
+    animation: yts-share-pulse 0.5s ease;
+}
+
+/* ===== TOOLTIPS ===== */
+.yts-share-button[data-tooltip]:hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    margin-bottom: 5px;
+}
+
+/* Copy Link Success */
+.yts-copy-success {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #4caf50;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    animation: yts-slide-in 0.3s ease;
+    z-index: 10000;
+}
+
+@keyframes yts-slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

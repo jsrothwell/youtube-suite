@@ -40,6 +40,7 @@ class YouTube_Suite {
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-importer.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-comments.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-engagement.php';
+        require_once YTS_PLUGIN_DIR . 'includes/class-yts-social-sharing.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-ux.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-gallery.php';
         require_once YTS_PLUGIN_DIR . 'includes/class-yts-single-post.php';
@@ -60,6 +61,7 @@ class YouTube_Suite {
         YTS_Importer::get_instance();
         YTS_Comments::get_instance();
         YTS_Engagement_Module::get_instance();
+        YTS_Social_Sharing::get_instance();
         YTS_UX::get_instance();
         YTS_Gallery::get_instance();
         YTS_Single_Post::get_instance();
@@ -115,6 +117,15 @@ class YouTube_Suite {
             'email_double_optin' => false,
             'share_buttons' => array('facebook', 'twitter', 'linkedin'),
 
+            // Social Sharing Settings
+            'share_button_position' => 'both',
+            'share_button_style' => 'flat',
+            'show_share_counts' => true,
+            'enable_floating_share_bar' => true,
+            'floating_bar_position' => 'left',
+            'share_networks' => array('facebook', 'twitter', 'linkedin', 'pinterest', 'email', 'copy'),
+            'twitter_username' => '',
+
             // UX Settings
             'lazy_load' => true,
             'responsive_embeds' => true,
@@ -156,6 +167,16 @@ class YouTube_Suite {
             YTS_VERSION
         );
 
+        // Social Sharing CSS
+        if (YouTube_Suite::get_setting('enable_social_share')) {
+            wp_enqueue_style(
+                'yts-social-sharing',
+                YTS_PLUGIN_URL . 'assets/css/social-sharing.css',
+                array(),
+                YTS_VERSION
+            );
+        }
+
         // Combined JS
         wp_enqueue_script(
             'yts-frontend',
@@ -164,6 +185,17 @@ class YouTube_Suite {
             YTS_VERSION,
             true
         );
+
+        // Social Sharing JS
+        if (YouTube_Suite::get_setting('enable_social_share')) {
+            wp_enqueue_script(
+                'yts-social-sharing',
+                YTS_PLUGIN_URL . 'assets/js/social-sharing.js',
+                array(),
+                YTS_VERSION,
+                true
+            );
+        }
 
         // Lazy loading library if enabled
         $settings = get_option($this->option_name, array());
@@ -181,6 +213,7 @@ class YouTube_Suite {
         wp_localize_script('yts-frontend', 'ytsData', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('yts_nonce'),
+            'postId' => get_the_ID(),
             'settings' => $settings
         ));
     }

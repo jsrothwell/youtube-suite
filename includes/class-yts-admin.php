@@ -284,6 +284,15 @@ class YTS_Admin {
                 'enable_social_share' => isset($_POST['enable_social_share']),
                 'enable_analytics' => isset($_POST['enable_analytics']),
                 'email_double_optin' => isset($_POST['email_double_optin']),
+                
+                // Social Sharing
+                'share_button_position' => sanitize_text_field($_POST['share_button_position']),
+                'share_button_style' => sanitize_text_field($_POST['share_button_style']),
+                'show_share_counts' => isset($_POST['show_share_counts']),
+                'enable_floating_share_bar' => isset($_POST['enable_floating_share_bar']),
+                'floating_bar_position' => sanitize_text_field($_POST['floating_bar_position']),
+                'share_networks' => isset($_POST['share_networks']) ? (array)$_POST['share_networks'] : array(),
+                'twitter_username' => sanitize_text_field($_POST['twitter_username']),
 
                 // UX
                 'lazy_load' => isset($_POST['lazy_load']),
@@ -488,6 +497,7 @@ class YTS_Admin {
 
                 <!-- Engagement Settings -->
                 <div class="yts-tab-content" data-tab="engagement">
+                    <h3><?php _e('Engagement Features', 'youtube-suite'); ?></h3>
                     <table class="form-table">
                         <tr>
                             <th><?php _e('Features', 'youtube-suite'); ?></th>
@@ -505,6 +515,93 @@ class YTS_Admin {
                             </td>
                         </tr>
                     </table>
+
+                    <hr style="margin: 30px 0;">
+
+                    <h3><?php _e('Social Sharing Configuration', 'youtube-suite'); ?></h3>
+                    <p class="description"><?php _e('Advanced social sharing similar to Social Warfare - includes inline buttons, floating bars, and click-to-tweet functionality.', 'youtube-suite'); ?></p>
+                    
+                    <table class="form-table">
+                        <tr>
+                            <th><?php _e('Share Button Position', 'youtube-suite'); ?></th>
+                            <td>
+                                <select name="share_button_position">
+                                    <option value="top" <?php selected($g('share_button_position', 'both'), 'top'); ?>><?php _e('Above Content', 'youtube-suite'); ?></option>
+                                    <option value="bottom" <?php selected($g('share_button_position', 'both'), 'bottom'); ?>><?php _e('Below Content', 'youtube-suite'); ?></option>
+                                    <option value="both" <?php selected($g('share_button_position', 'both'), 'both'); ?>><?php _e('Above & Below', 'youtube-suite'); ?></option>
+                                    <option value="none" <?php selected($g('share_button_position', 'both'), 'none'); ?>><?php _e('None (Manual)', 'youtube-suite'); ?></option>
+                                </select>
+                                <p class="description"><?php _e('Where to display inline share buttons', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Button Style', 'youtube-suite'); ?></th>
+                            <td>
+                                <select name="share_button_style">
+                                    <option value="flat" <?php selected($g('share_button_style', 'flat'), 'flat'); ?>><?php _e('Flat (Solid Colors)', 'youtube-suite'); ?></option>
+                                    <option value="gradient" <?php selected($g('share_button_style', 'flat'), 'gradient'); ?>><?php _e('Gradient', 'youtube-suite'); ?></option>
+                                    <option value="outlined" <?php selected($g('share_button_style', 'flat'), 'outlined'); ?>><?php _e('Outlined', 'youtube-suite'); ?></option>
+                                </select>
+                                <p class="description"><?php _e('Visual style of share buttons', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Share Networks', 'youtube-suite'); ?></th>
+                            <td>
+                                <?php 
+                                $selected_networks = $g('share_networks', array('facebook', 'twitter', 'linkedin', 'pinterest'));
+                                if (!is_array($selected_networks)) $selected_networks = array();
+                                ?>
+                                <label><input type="checkbox" name="share_networks[]" value="facebook" <?php checked(in_array('facebook', $selected_networks)); ?>> 📘 Facebook</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="twitter" <?php checked(in_array('twitter', $selected_networks)); ?>> 🐦 Twitter</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="linkedin" <?php checked(in_array('linkedin', $selected_networks)); ?>> 💼 LinkedIn</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="pinterest" <?php checked(in_array('pinterest', $selected_networks)); ?>> 📌 Pinterest</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="reddit" <?php checked(in_array('reddit', $selected_networks)); ?>> 🤖 Reddit</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="whatsapp" <?php checked(in_array('whatsapp', $selected_networks)); ?>> 💬 WhatsApp</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="email" <?php checked(in_array('email', $selected_networks)); ?>> ✉️ Email</label><br>
+                                <label><input type="checkbox" name="share_networks[]" value="copy" <?php checked(in_array('copy', $selected_networks)); ?>> 🔗 Copy Link</label>
+                                <p class="description"><?php _e('Select which social networks to display', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Floating Share Bar', 'youtube-suite'); ?></th>
+                            <td>
+                                <label><input type="checkbox" name="enable_floating_share_bar" value="1" <?php checked($g('enable_floating_share_bar'), 1); ?>> <?php _e('Enable floating sidebar share buttons', 'youtube-suite'); ?></label><br>
+                                <div style="margin-top: 10px;">
+                                    <label><?php _e('Position:', 'youtube-suite'); ?></label>
+                                    <select name="floating_bar_position">
+                                        <option value="left" <?php selected($g('floating_bar_position', 'left'), 'left'); ?>><?php _e('Left Side', 'youtube-suite'); ?></option>
+                                        <option value="right" <?php selected($g('floating_bar_position', 'left'), 'right'); ?>><?php _e('Right Side', 'youtube-suite'); ?></option>
+                                    </select>
+                                </div>
+                                <p class="description"><?php _e('Sticky share bar that follows as users scroll (hidden on mobile)', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Share Counts', 'youtube-suite'); ?></th>
+                            <td>
+                                <label><input type="checkbox" name="show_share_counts" value="1" <?php checked($g('show_share_counts', true), 1); ?>> <?php _e('Display share counts on buttons', 'youtube-suite'); ?></label>
+                                <p class="description"><?php _e('Shows how many times content has been shared', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Twitter Username', 'youtube-suite'); ?></th>
+                            <td>
+                                <input type="text" name="twitter_username" value="<?php echo esc_attr($g('twitter_username')); ?>" class="regular-text" placeholder="@yourusername">
+                                <p class="description"><?php _e('Optional: Your Twitter username for "via @username" in tweets', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div style="background: #e8f4f8; padding: 20px; border-left: 4px solid #1da1f2; margin-top: 20px;">
+                        <h4 style="margin-top: 0;"><?php _e('💡 How to Use Social Sharing', 'youtube-suite'); ?></h4>
+                        <p><strong><?php _e('Automatic:', 'youtube-suite'); ?></strong> <?php _e('Share buttons will automatically appear on video posts based on your position settings.', 'youtube-suite'); ?></p>
+                        <p><strong><?php _e('Shortcodes:', 'youtube-suite'); ?></strong></p>
+                        <ul style="margin-left: 20px;">
+                            <li><code>[share_buttons]</code> - <?php _e('Insert share buttons anywhere', 'youtube-suite'); ?></li>
+                            <li><code>[click_to_tweet]Your tweetable quote here[/click_to_tweet]</code> - <?php _e('Create click-to-tweet boxes', 'youtube-suite'); ?></li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- UX Settings -->
