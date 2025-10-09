@@ -207,3 +207,5 @@ function yts_format_duration($duration) {
     $formatted .= isset($time_parts[0]) ? str_pad($time_parts[0], 2, '0', STR_PAD_LEFT) : '00';
     return $formatted;
 }
+
+if (class_exists('YTS_Admin')) YTS_Admin::get_instance();
