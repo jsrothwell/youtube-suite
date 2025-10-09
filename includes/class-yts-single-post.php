@@ -68,7 +68,7 @@ class YTS_Single_Post {
     }
 
     /**
-     * Remove existing video embeds from content to prevent duplicates
+     * Remove existing video embeds AND description divs from content
      */
     private function remove_existing_video_embeds($content, $video_id) {
         // Remove YouTube iframes
@@ -79,6 +79,9 @@ class YTS_Single_Post {
         
         // Remove any standalone YouTube embeds
         $content = preg_replace('/<iframe[^>]*youtube\.com[^>]*>.*?<\/iframe>/is', '', $content);
+        
+        // Remove the YouTube description div (we'll display it separately if the setting is enabled)
+        $content = preg_replace('/<div class="yts-video-description">.*?<\/div>/is', '', $content);
         
         // Clean up any extra whitespace
         $content = preg_replace('/\n\s*\n\s*\n/', "\n\n", $content);
@@ -149,28 +152,6 @@ class YTS_Single_Post {
         // If no YouTube description was found, don't show anything
         // (We don't want to duplicate the entire post content here)
         return '';
-    }
-
-    /**
-     * Remove existing video embeds AND description divs from content
-     */
-    private function remove_existing_video_embeds($content, $video_id) {
-        // Remove YouTube iframes
-        $content = preg_replace('/<iframe[^>]*youtube\.com\/embed\/' . preg_quote($video_id, '/') . '[^>]*>.*?<\/iframe>/is', '', $content);
-        
-        // Remove video wrapper divs
-        $content = preg_replace('/<div class="yts-video-embed">.*?<\/div>/is', '', $content);
-        
-        // Remove any standalone YouTube embeds
-        $content = preg_replace('/<iframe[^>]*youtube\.com[^>]*>.*?<\/iframe>/is', '', $content);
-        
-        // Remove the YouTube description div (we'll display it separately if the setting is enabled)
-        $content = preg_replace('/<div class="yts-video-description">.*?<\/div>/is', '', $content);
-        
-        // Clean up any extra whitespace
-        $content = preg_replace('/\n\s*\n\s*\n/', "\n\n", $content);
-        
-        return trim($content);
     }
 
     private function get_related_videos() {
