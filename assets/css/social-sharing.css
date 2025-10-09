@@ -36,6 +36,102 @@
     overflow: hidden;
 }
 
+/* ===== BUTTON SIZES ===== */
+
+/* Small Size */
+.yts-size-small .yts-share-button {
+    padding: 8px 16px;
+    font-size: 12px;
+    gap: 6px;
+}
+
+.yts-size-small .yts-share-icon {
+    font-size: 14px;
+}
+
+.yts-size-small .yts-share-count {
+    padding: 2px 6px;
+    font-size: 10px;
+}
+
+.yts-size-small .yts-share-label {
+    font-size: 13px;
+}
+
+/* Medium Size (Default) */
+.yts-size-medium .yts-share-button {
+    padding: 12px 24px;
+    font-size: 14px;
+    gap: 8px;
+}
+
+.yts-size-medium .yts-share-icon {
+    font-size: 16px;
+}
+
+.yts-size-medium .yts-share-count {
+    padding: 3px 10px;
+    font-size: 12px;
+}
+
+.yts-size-medium .yts-share-label {
+    font-size: 15px;
+}
+
+/* Large Size */
+.yts-size-large .yts-share-button {
+    padding: 16px 32px;
+    font-size: 16px;
+    gap: 10px;
+}
+
+.yts-size-large .yts-share-icon {
+    font-size: 20px;
+}
+
+.yts-size-large .yts-share-count {
+    padding: 4px 12px;
+    font-size: 14px;
+}
+
+.yts-size-large .yts-share-label {
+    font-size: 17px;
+}
+
+/* Size adjustments for minimal style */
+.yts-size-small.yts-style-minimal .yts-share-button {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.yts-size-small.yts-style-minimal .yts-share-icon {
+    font-size: 16px;
+}
+
+.yts-size-medium.yts-style-minimal .yts-share-button {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+}
+
+.yts-size-medium.yts-style-minimal .yts-share-icon {
+    font-size: 20px;
+}
+
+.yts-size-large.yts-style-minimal .yts-share-button {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    min-height: 60px;
+}
+
+.yts-size-large.yts-style-minimal .yts-share-icon {
+    font-size: 24px;
+}
+
 .yts-share-button::before {
     content: '';
     position: absolute;
@@ -415,17 +511,41 @@
         justify-content: center;
     }
     
-    .yts-share-button {
-        padding: 8px 15px;
+    /* On mobile, reduce all sizes slightly */
+    .yts-size-large .yts-share-button {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+    
+    .yts-size-large .yts-share-icon {
+        font-size: 16px;
+    }
+    
+    .yts-size-medium .yts-share-button {
+        padding: 10px 20px;
         font-size: 13px;
     }
     
+    .yts-size-medium .yts-share-icon {
+        font-size: 14px;
+    }
+    
+    .yts-size-small .yts-share-button {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+    
+    .yts-size-small .yts-share-icon {
+        font-size: 13px;
+    }
+    
+    /* Hide text on mobile for all non-minimal styles */
     .yts-share-text {
         display: none;
     }
     
     .yts-share-icon {
-        font-size: 20px;
+        font-size: 18px;
     }
     
     .yts-click-to-tweet {

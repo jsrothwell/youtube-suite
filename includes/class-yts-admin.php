@@ -288,6 +288,7 @@ class YTS_Admin {
                 // Social Sharing
                 'share_button_position' => sanitize_text_field($_POST['share_button_position']),
                 'share_button_style' => sanitize_text_field($_POST['share_button_style']),
+                'share_button_size' => sanitize_text_field($_POST['share_button_size']),
                 'show_share_counts' => isset($_POST['show_share_counts']),
                 'enable_floating_share_bar' => isset($_POST['enable_floating_share_bar']),
                 'floating_bar_position' => sanitize_text_field($_POST['floating_bar_position']),
@@ -545,6 +546,22 @@ class YTS_Admin {
                                     <option value="minimal" <?php selected($g('share_button_style', 'flat'), 'minimal'); ?>><?php _e('Minimal (Icons Only)', 'youtube-suite'); ?></option>
                                 </select>
                                 <p class="description"><?php _e('Visual style of share buttons', 'youtube-suite'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php _e('Button Size', 'youtube-suite'); ?></th>
+                            <td>
+                                <select name="share_button_size">
+                                    <option value="small" <?php selected($g('share_button_size', 'medium'), 'small'); ?>><?php _e('Small - Compact', 'youtube-suite'); ?></option>
+                                    <option value="medium" <?php selected($g('share_button_size', 'medium'), 'medium'); ?>><?php _e('Medium - Balanced (Recommended)', 'youtube-suite'); ?></option>
+                                    <option value="large" <?php selected($g('share_button_size', 'medium'), 'large'); ?>><?php _e('Large - Prominent', 'youtube-suite'); ?></option>
+                                </select>
+                                <p class="description">
+                                    <?php _e('Control the size of share buttons:', 'youtube-suite'); ?><br>
+                                    <strong>Small:</strong> 8px padding, 12px text<br>
+                                    <strong>Medium:</strong> 12px padding, 14px text<br>
+                                    <strong>Large:</strong> 16px padding, 16px text
+                                </p>
                             </td>
                         </tr>
                         <tr>

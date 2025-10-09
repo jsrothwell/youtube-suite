@@ -12,7 +12,7 @@
 if (!defined('ABSPATH')) exit;
 
 // Define plugin constants
-define('YTS_VERSION', '2.0.2');
+define('YTS_VERSION', '2.0.3');
 define('YTS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('YTS_PLUGIN_URL', plugin_dir_url(__FILE__));
 
@@ -120,6 +120,7 @@ class YouTube_Suite {
             // Social Sharing Settings
             'share_button_position' => 'both',
             'share_button_style' => 'flat',
+            'share_button_size' => 'medium',
             'show_share_counts' => true,
             'enable_floating_share_bar' => true,
             'floating_bar_position' => 'left',

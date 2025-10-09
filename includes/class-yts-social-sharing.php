@@ -78,13 +78,14 @@ class YTS_Social_Sharing {
     private function get_share_buttons($style = 'inline', $position = 'left') {
         $networks = YouTube_Suite::get_setting('share_networks', array('facebook', 'twitter', 'linkedin', 'pinterest'));
         $button_style = YouTube_Suite::get_setting('share_button_style', 'flat');
+        $button_size = YouTube_Suite::get_setting('share_button_size', 'medium');
         $show_counts = YouTube_Suite::get_setting('show_share_counts', true);
         
         $post_url = urlencode(get_permalink());
         $post_title = urlencode(get_the_title());
         $post_image = urlencode(get_the_post_thumbnail_url(get_the_ID(), 'large'));
 
-        $html = '<div class="yts-share-buttons yts-share-' . esc_attr($style) . ' yts-style-' . esc_attr($button_style) . '">';
+        $html = '<div class="yts-share-buttons yts-share-' . esc_attr($style) . ' yts-style-' . esc_attr($button_style) . ' yts-size-' . esc_attr($button_size) . '">';
         
         if ($style === 'inline') {
             $html .= '<span class="yts-share-label">' . __('Share this:', 'youtube-suite') . '</span>';
