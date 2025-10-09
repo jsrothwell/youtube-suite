@@ -34,7 +34,7 @@ class YTS_Single_Post {
         $show_related = YouTube_Suite::get_setting('show_related_videos', false);
 
         // Remove any existing video embeds from content to prevent duplicates
-        $content = $this->remove_existing_video_embeds($content, $video_id);
+        $cleaned_content = $this->remove_existing_video_embeds($content, $video_id);
 
         // Build the video embed
         $video_html = $this->get_video_embed($video_id, $video_size);
@@ -44,7 +44,7 @@ class YTS_Single_Post {
             $video_html .= $this->get_video_details($video_id);
         }
 
-        // Add video description if enabled
+        // Add video description if enabled (only the YouTube description, not full content)
         if ($show_description) {
             $video_html .= $this->get_video_description($content);
         }
@@ -57,13 +57,13 @@ class YTS_Single_Post {
         // Apply position setting
         switch ($video_position) {
             case 'top':
-                return $video_html . $content;
+                return $video_html . $cleaned_content;
             case 'bottom':
-                return $content . $video_html;
+                return $cleaned_content . $video_html;
             case 'replace':
                 return $video_html;
             default:
-                return $video_html . $content;
+                return $video_html . $cleaned_content;
         }
     }
 
@@ -137,17 +137,40 @@ class YTS_Single_Post {
             $content = get_the_content();
         }
         
-        // Extract description from content if it was wrapped in a div
+        // Extract ONLY the YouTube description from the yts-video-description div
+        // This was added during import and contains the original YouTube description
         if (preg_match('/<div class="yts-video-description">(.*?)<\/div>/s', $content, $matches)) {
-            return '<div class="yts-video-description-section">' . $matches[1] . '</div>';
+            return '<div class="yts-video-description-section">
+                <h4>' . __('Video Description', 'youtube-suite') . '</h4>' . 
+                $matches[1] . 
+                '</div>';
         }
         
-        // Otherwise, use the remaining content as description if it exists
-        if (!empty($content) && strlen(strip_tags($content)) > 50) {
-            return '<div class="yts-video-description-section"><h4>' . __('About this video', 'youtube-suite') . '</h4>' . wpautop($content) . '</div>';
-        }
-        
+        // If no YouTube description was found, don't show anything
+        // (We don't want to duplicate the entire post content here)
         return '';
+    }
+
+    /**
+     * Remove existing video embeds AND description divs from content
+     */
+    private function remove_existing_video_embeds($content, $video_id) {
+        // Remove YouTube iframes
+        $content = preg_replace('/<iframe[^>]*youtube\.com\/embed\/' . preg_quote($video_id, '/') . '[^>]*>.*?<\/iframe>/is', '', $content);
+        
+        // Remove video wrapper divs
+        $content = preg_replace('/<div class="yts-video-embed">.*?<\/div>/is', '', $content);
+        
+        // Remove any standalone YouTube embeds
+        $content = preg_replace('/<iframe[^>]*youtube\.com[^>]*>.*?<\/iframe>/is', '', $content);
+        
+        // Remove the YouTube description div (we'll display it separately if the setting is enabled)
+        $content = preg_replace('/<div class="yts-video-description">.*?<\/div>/is', '', $content);
+        
+        // Clean up any extra whitespace
+        $content = preg_replace('/\n\s*\n\s*\n/', "\n\n", $content);
+        
+        return trim($content);
     }
 
     private function get_related_videos() {
