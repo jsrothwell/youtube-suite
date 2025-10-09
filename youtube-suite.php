@@ -12,7 +12,7 @@
 if (!defined('ABSPATH')) exit;
 
 // Define plugin constants
-define('YTS_VERSION', '2.0.0');
+define('YTS_VERSION', '2.0.2');
 define('YTS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('YTS_PLUGIN_URL', plugin_dir_url(__FILE__));
 
