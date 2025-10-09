@@ -1,6 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
+if ( ! class_exists( 'YTS_Ajax' ) ) {
 class YTS_Ajax {
     private static $instance = null;
 
@@ -42,5 +43,6 @@ class YTS_Ajax {
             wp_send_json_error(array('message' => 'An error occurred.'));
         }
     }
+}
 }
 ?>

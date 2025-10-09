@@ -1,65 +1,49 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-class YTS_Engagement {
-    private static $instance = null;
+if ( ! class_exists( 'YTS_Comments' ) ) {
+  class YTS_Comments {
+      private static $instance = null;
 
-    public static function get_instance() {
-        if (null === self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
+      public static function get_instance() {
+          if (null === self::$instance) {
+              self::$instance = new self();
+          }
+          return self::$instance;
+      }
 
-    private function __construct() {
-        add_shortcode('yts_subscribe', array($this, 'subscribe_shortcode'));
-        add_shortcode('yts_email_signup', array($this, 'email_signup_shortcode'));
-        add_shortcode('yts_social_share', array($this, 'social_share_shortcode'));
-    }
+      private function __construct() {
+          add_shortcode('youtube_comments', array($this, 'comments_shortcode'));
+      }
 
-    public function subscribe_shortcode($atts) {
-        if (!YouTube_Suite::get_setting('enable_subscribe')) return '';
+      public function comments_shortcode($atts) {
+          if (!YouTube_Suite::get_setting('enable_comments_sync')) return '';
 
-        $channel_id = YouTube_Suite::get_setting('channel_id');
-        if (empty($channel_id)) return '';
+          $atts = shortcode_atts(array(
+              'video_url' => '',
+              'api_key' => YouTube_Suite::get_setting('api_key')
+          ), $atts);
 
-        return '<script src="https://apis.google.com/js/platform.js"></script>
-                <div class="g-ytsubscribe" data-channelid="' . esc_attr($channel_id) . '" data-layout="default" data-count="default"></div>';
-    }
+          if (empty($atts['video_url']) || empty($atts['api_key'])) {
+              return '<p>Error: Please provide video_url and ensure API key is configured.</p>';
+          }
 
-    public function email_signup_shortcode($atts) {
-        if (!YouTube_Suite::get_setting('enable_email_signup')) return '';
+          $video_id = yts_get_video_id($atts['video_url']);
+          if (!$video_id) {
+              return '<p>Error: Invalid YouTube URL.</p>';
+          }
 
-        $atts = shortcode_atts(array(
-            'title' => 'Subscribe to Updates',
-            'button_text' => 'Subscribe'
-        ), $atts);
-
-        ob_start();
-        ?>
-        <div class="yts-email-signup">
-            <h3><?php echo esc_html($atts['title']); ?></h3>
-            <form class="yts-email-form">
-                <input type="email" name="email" placeholder="Your Email" required>
-                <button type="submit"><?php echo esc_html($atts['button_text']); ?></button>
-                <div class="yts-message"></div>
-            </form>
-        </div>
-        <?php
-        return ob_get_clean();
-    }
-
-    public function social_share_shortcode($atts) {
-        if (!YouTube_Suite::get_setting('enable_social_share')) return '';
-
-        $url = urlencode(get_permalink());
-        $title = urlencode(get_the_title());
-
-        return '<div class="yts-social-share">
-                <a href="https://www.facebook.com/sharer.php?u=' . $url . '" target="_blank">Facebook</a>
-                <a href="https://twitter.com/intent/tweet?url=' . $url . '&text=' . $title . '" target="_blank">Twitter</a>
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url=' . $url . '" target="_blank">LinkedIn</a>
-                </div>';
-    }
+          ob_start();
+          ?>
+          <div id="yts-comments-wrapper" data-video-id="<?php echo esc_attr($video_id); ?>" data-api-key="<?php echo esc_attr($atts['api_key']); ?>">
+              <h3 class="yts-comments-title">Comments from YouTube</h3>
+              <div id="yts-comments-container">
+                  <div class="yts-comments-loader">Loading comments...</div>
+              </div>
+          </div>
+          <?php
+          return ob_get_clean();
+      }
+  }
 }
 ?>

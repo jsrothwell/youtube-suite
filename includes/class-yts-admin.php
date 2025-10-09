@@ -4,27 +4,34 @@
  */
 
 if (!defined('ABSPATH')) exit;
-
+if ( ! class_exists( 'YTS_Admin' ) ) {
 class YTS_Admin {
-    
+
     private static $instance = null;
     private $option_name = 'yts_settings';
-    
+
     public static function get_instance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
         return self::$instance;
     }
-    
+
     private function __construct() {
+      // --- ADD THIS LINE FOR TESTING ---
+    error_log('*** YTS_Admin class is being loaded ***');
+    // ---------------------------------
         add_action('admin_menu', array($this, 'add_admin_menu'));
         add_action('admin_init', array($this, 'register_settings'));
         add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_assets'));
     }
-    
+
     public function add_admin_menu() {
-        // Main menu
+      // --- ADD THIS LINE ---
+  trigger_error("MENU FUNCTION STARTED", E_USER_WARNING);
+  // ---------------------
+
+  // Main menu
         add_menu_page(
             __('YouTube Suite', 'youtube-suite'),
             __('YouTube Suite', 'youtube-suite'),
@@ -34,7 +41,7 @@ class YTS_Admin {
             'dashicons-youtube',
             30
         );
-        
+
         // Dashboard
         add_submenu_page(
             'youtube-suite',
@@ -44,7 +51,7 @@ class YTS_Admin {
             'youtube-suite',
             array($this, 'render_dashboard')
         );
-        
+
         // Settings
         add_submenu_page(
             'youtube-suite',
@@ -54,7 +61,7 @@ class YTS_Admin {
             'youtube-suite-settings',
             array($this, 'render_settings')
         );
-        
+
         // Subscribers
         add_submenu_page(
             'youtube-suite',
@@ -64,7 +71,7 @@ class YTS_Admin {
             'youtube-suite-subscribers',
             array($this, 'render_subscribers')
         );
-        
+
         // Analytics
         add_submenu_page(
             'youtube-suite',
@@ -75,23 +82,23 @@ class YTS_Admin {
             array($this, 'render_analytics')
         );
     }
-    
+
     public function register_settings() {
         register_setting('yts_settings_group', $this->option_name);
     }
-    
+
     public function enqueue_admin_assets($hook) {
         if (strpos($hook, 'youtube-suite') === false) {
             return;
         }
-        
+
         wp_enqueue_style(
             'yts-admin',
             YTS_PLUGIN_URL . 'assets/css/admin.css',
             array(),
             YTS_VERSION
         );
-        
+
         wp_enqueue_script(
             'yts-admin',
             YTS_PLUGIN_URL . 'assets/js/admin.js',
@@ -99,20 +106,20 @@ class YTS_Admin {
             YTS_VERSION,
             true
         );
-        
+
         wp_enqueue_style('wp-color-picker');
         wp_enqueue_script('wp-color-picker');
     }
-    
+
     public function render_dashboard() {
         $db = YTS_Database::get_instance();
         $active_subscribers = $db->get_subscriber_count('active');
         $total_videos = wp_count_posts('post')->publish;
-        
+
         ?>
         <div class="wrap yts-admin">
             <h1><?php _e('YouTube Suite Dashboard', 'youtube-suite'); ?></h1>
-            
+
             <div class="yts-dashboard-grid">
                 <!-- Stats Cards -->
                 <div class="yts-card yts-card-primary">
@@ -120,26 +127,26 @@ class YTS_Admin {
                     <h3><?php echo esc_html($total_videos); ?></h3>
                     <p><?php _e('Videos Imported', 'youtube-suite'); ?></p>
                 </div>
-                
+
                 <div class="yts-card yts-card-success">
                     <div class="yts-card-icon">📧</div>
                     <h3><?php echo esc_html($active_subscribers); ?></h3>
                     <p><?php _e('Email Subscribers', 'youtube-suite'); ?></p>
                 </div>
-                
+
                 <div class="yts-card yts-card-info">
                     <div class="yts-card-icon">👁️</div>
                     <h3><?php echo esc_html($db->get_analytics_count(null, date('Y-m-d', strtotime('-30 days')))); ?></h3>
                     <p><?php _e('Engagements (30d)', 'youtube-suite'); ?></p>
                 </div>
-                
+
                 <div class="yts-card yts-card-warning">
                     <div class="yts-card-icon">🎯</div>
                     <h3><?php echo YouTube_Suite::get_setting('channel_id') ? '✓' : '✗'; ?></h3>
                     <p><?php _e('API Connected', 'youtube-suite'); ?></p>
                 </div>
             </div>
-            
+
             <!-- Quick Actions -->
             <div class="yts-section">
                 <h2><?php _e('Quick Actions', 'youtube-suite'); ?></h2>
@@ -151,7 +158,7 @@ class YTS_Admin {
                             🔄 <?php _e('Import Videos Now', 'youtube-suite'); ?>
                         </button>
                     </form>
-                    
+
                     <form method="post" style="display: inline;">
                         <input type="hidden" name="yts_action" value="refresh_all">
                         <?php wp_nonce_field('yts_refresh_all'); ?>
@@ -159,13 +166,13 @@ class YTS_Admin {
                             ♻️ <?php _e('Refresh All Posts', 'youtube-suite'); ?>
                         </button>
                     </form>
-                    
+
                     <a href="<?php echo admin_url('admin.php?page=youtube-suite-settings'); ?>" class="button">
                         ⚙️ <?php _e('Settings', 'youtube-suite'); ?>
                     </a>
                 </div>
             </div>
-            
+
             <!-- Shortcodes Guide -->
             <div class="yts-section">
                 <h2><?php _e('Available Shortcodes', 'youtube-suite'); ?></h2>
@@ -190,7 +197,7 @@ class YTS_Admin {
             </div>
         </div>
         <?php
-        
+
         // Handle actions
         if (isset($_POST['yts_action'])) {
             if ($_POST['yts_action'] === 'import_now' && check_admin_referer('yts_import_now')) {
@@ -203,62 +210,62 @@ class YTS_Admin {
             }
         }
     }
-    
+
     public function render_settings() {
         if (isset($_POST['yts_save_settings'])) {
             check_admin_referer('yts_settings_save');
-            
+
             $settings = array(
                 // API
                 'api_key' => sanitize_text_field($_POST['api_key']),
                 'channel_id' => sanitize_text_field($_POST['channel_id']),
-                
+
                 // Import
                 'auto_import' => isset($_POST['auto_import']),
                 'import_frequency' => sanitize_text_field($_POST['import_frequency']),
                 'post_status' => sanitize_text_field($_POST['post_status']),
                 'embed_video' => isset($_POST['embed_video']),
                 'set_featured_image' => isset($_POST['set_featured_image']),
-                
+
                 // Gallery
                 'layout_type' => sanitize_text_field($_POST['layout_type']),
                 'columns' => intval($_POST['columns']),
                 'videos_per_page' => intval($_POST['videos_per_page']),
-                
+
                 // Engagement
                 'enable_subscribe' => isset($_POST['enable_subscribe']),
                 'enable_email_signup' => isset($_POST['enable_email_signup']),
                 'enable_social_share' => isset($_POST['enable_social_share']),
                 'enable_analytics' => isset($_POST['enable_analytics']),
                 'email_double_optin' => isset($_POST['email_double_optin']),
-                
+
                 // UX
                 'lazy_load' => isset($_POST['lazy_load']),
                 'responsive_embeds' => isset($_POST['responsive_embeds']),
                 'enable_search' => isset($_POST['enable_search']),
                 'enable_notification' => isset($_POST['enable_notification']),
                 'notification_duration' => intval($_POST['notification_duration']),
-                
+
                 // Comments
                 'enable_comments_sync' => isset($_POST['enable_comments_sync']),
             );
-            
+
             update_option($this->option_name, $settings);
             echo '<div class="notice notice-success"><p>' . __('Settings saved!', 'youtube-suite') . '</p></div>';
         }
-        
+
         $settings = get_option($this->option_name, array());
         $g = function($key, $default = '') use ($settings) {
             return isset($settings[$key]) ? $settings[$key] : $default;
         };
-        
+
         ?>
         <div class="wrap yts-admin">
             <h1><?php _e('YouTube Suite Settings', 'youtube-suite'); ?></h1>
-            
+
             <form method="post" action="">
                 <?php wp_nonce_field('yts_settings_save'); ?>
-                
+
                 <!-- Tabs -->
                 <div class="yts-tabs">
                     <button type="button" class="yts-tab active" data-tab="api">🔑 API</button>
@@ -268,7 +275,7 @@ class YTS_Admin {
                     <button type="button" class="yts-tab" data-tab="ux">✨ UX</button>
                     <button type="button" class="yts-tab" data-tab="comments">💭 Comments</button>
                 </div>
-                
+
                 <!-- API Settings -->
                 <div class="yts-tab-content active" data-tab="api">
                     <table class="form-table">
@@ -288,7 +295,7 @@ class YTS_Admin {
                         </tr>
                     </table>
                 </div>
-                
+
                 <!-- Import Settings -->
                 <div class="yts-tab-content" data-tab="import">
                     <table class="form-table">
@@ -329,7 +336,7 @@ class YTS_Admin {
                         </tr>
                     </table>
                 </div>
-                
+
                 <!-- Gallery Settings -->
                 <div class="yts-tab-content" data-tab="gallery">
                     <table class="form-table">
@@ -361,7 +368,7 @@ class YTS_Admin {
                         </tr>
                     </table>
                 </div>
-                
+
                 <!-- Engagement Settings -->
                 <div class="yts-tab-content" data-tab="engagement">
                     <table class="form-table">
@@ -382,7 +389,7 @@ class YTS_Admin {
                         </tr>
                     </table>
                 </div>
-                
+
                 <!-- UX Settings -->
                 <div class="yts-tab-content" data-tab="ux">
                     <table class="form-table">
@@ -408,7 +415,7 @@ class YTS_Admin {
                         </tr>
                     </table>
                 </div>
-                
+
                 <!-- Comments Settings -->
                 <div class="yts-tab-content" data-tab="comments">
                     <table class="form-table">
@@ -423,7 +430,7 @@ class YTS_Admin {
                         </tr>
                     </table>
                 </div>
-                
+
                 <p class="submit">
                     <input type="submit" name="yts_save_settings" class="button button-primary" value="<?php _e('Save All Settings', 'youtube-suite'); ?>">
                 </p>
@@ -431,27 +438,27 @@ class YTS_Admin {
         </div>
         <?php
     }
-    
+
     public function render_subscribers() {
         $db = YTS_Database::get_instance();
-        
+
         // Handle export
         if (isset($_POST['action']) && $_POST['action'] === 'export_subscribers') {
             $this->export_subscribers();
         }
-        
+
         $per_page = 20;
         $page = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
         $offset = ($page - 1) * $per_page;
-        
+
         $subscribers = $db->get_active_subscribers($per_page, $offset);
         $total_count = $db->get_subscriber_count('active');
         $total_pages = ceil($total_count / $per_page);
-        
+
         ?>
         <div class="wrap yts-admin">
             <h1><?php _e('Email Subscribers', 'youtube-suite'); ?></h1>
-            
+
             <div class="yts-stats-row">
                 <div class="yts-stat-box">
                     <h3><?php echo esc_html($db->get_subscriber_count('active')); ?></h3>
@@ -466,12 +473,12 @@ class YTS_Admin {
                     <p><?php _e('Unsubscribed', 'youtube-suite'); ?></p>
                 </div>
             </div>
-            
+
             <form method="post">
                 <input type="hidden" name="action" value="export_subscribers">
                 <button type="submit" class="button"><?php _e('Export to CSV', 'youtube-suite'); ?></button>
             </form>
-            
+
             <table class="wp-list-table widefat fixed striped" style="margin-top: 20px;">
                 <thead>
                     <tr>
@@ -499,15 +506,15 @@ class YTS_Admin {
         </div>
         <?php
     }
-    
+
     public function render_analytics() {
         $db = YTS_Database::get_instance();
         $start_date = date('Y-m-d', strtotime('-30 days'));
-        
+
         ?>
         <div class="wrap yts-admin">
             <h1><?php _e('Analytics Dashboard', 'youtube-suite'); ?></h1>
-            
+
             <div class="yts-stats-row">
                 <div class="yts-stat-box">
                     <h3><?php echo esc_html($db->get_analytics_count('subscribe_click', $start_date)); ?></h3>
@@ -526,22 +533,22 @@ class YTS_Admin {
                     <p><?php _e('CTA Clicks', 'youtube-suite'); ?></p>
                 </div>
             </div>
-            
+
             <p><?php _e('Last 30 days', 'youtube-suite'); ?></p>
         </div>
         <?php
     }
-    
+
     private function export_subscribers() {
         $db = YTS_Database::get_instance();
         $subscribers = $db->get_active_subscribers();
-        
+
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="subscribers-' . date('Y-m-d') . '.csv"');
-        
+
         $output = fopen('php://output', 'w');
         fputcsv($output, array('Email', 'Name', 'Status', 'Date'));
-        
+
         foreach ($subscribers as $subscriber) {
             fputcsv($output, array(
                 $subscriber->email,
@@ -550,8 +557,10 @@ class YTS_Admin {
                 $subscriber->subscribed_date
             ));
         }
-        
+
         fclose($output);
         exit;
     }
 }
+}
+?>

@@ -1,6 +1,6 @@
 <?php
 if (!defined('ABSPATH')) exit;
-
+if ( ! class_exists( 'YTS_Blocks' ) ) {
 class YTS_Blocks {
     private static $instance = null;
 
@@ -19,5 +19,6 @@ class YTS_Blocks {
         // Placeholder - blocks can be added later
         // register_block_type('yts/subscribe-button', array(...));
     }
+}
 }
 ?>

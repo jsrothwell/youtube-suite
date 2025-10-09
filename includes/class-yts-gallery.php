@@ -1,6 +1,7 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
+if ( ! class_exists( 'YTS_Gallery' ) ) {
 class YTS_Gallery {
     private static $instance = null;
 
@@ -61,5 +62,6 @@ class YTS_Gallery {
         wp_reset_postdata();
         return ob_get_clean();
     }
+}
 }
 ?>

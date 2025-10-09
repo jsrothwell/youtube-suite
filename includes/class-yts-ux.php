@@ -1,6 +1,6 @@
 <?php
 if (!defined('ABSPATH')) exit;
-
+if ( ! class_exists( 'YTS_UX' ) ) {
 class YTS_UX {
     private static $instance = null;
 
@@ -64,5 +64,6 @@ class YTS_UX {
             $content
         );
     }
+}
 }
 ?>

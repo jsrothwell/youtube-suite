@@ -4,31 +4,31 @@
  */
 
 if (!defined('ABSPATH')) exit;
-
+if ( ! class_exists( 'YTS_Database' ) ) {
 class YTS_Database {
-    
+
     private static $instance = null;
     private $subscribers_table;
     private $analytics_table;
-    
+
     public static function get_instance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
         return self::$instance;
     }
-    
+
     private function __construct() {
         global $wpdb;
         $this->subscribers_table = $wpdb->prefix . 'yts_subscribers';
         $this->analytics_table = $wpdb->prefix . 'yts_analytics';
     }
-    
+
     public static function create_tables() {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
         $instance = self::get_instance();
-        
+
         // Subscribers table
         $sql_subscribers = "CREATE TABLE IF NOT EXISTS {$instance->subscribers_table} (
             id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -44,7 +44,7 @@ class YTS_Database {
             UNIQUE KEY email (email),
             KEY status (status)
         ) $charset_collate;";
-        
+
         // Analytics table
         $sql_analytics = "CREATE TABLE IF NOT EXISTS {$instance->analytics_table} (
             id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -57,30 +57,30 @@ class YTS_Database {
             KEY action_type (action_type),
             KEY created_at (created_at)
         ) $charset_collate;";
-        
+
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_subscribers);
         dbDelta($sql_analytics);
     }
-    
+
     // Subscriber methods
     public function add_subscriber($email, $data = array()) {
         global $wpdb;
-        
+
         $defaults = array(
             'name' => '',
             'status' => 'active',
             'source' => 'website',
             'ip_address' => $this->get_user_ip()
         );
-        
+
         $data = wp_parse_args($data, $defaults);
         $data['email'] = sanitize_email($email);
-        
+
         $result = $wpdb->insert($this->subscribers_table, $data);
         return $result ? $wpdb->insert_id : false;
     }
-    
+
     public function subscriber_exists($email) {
         global $wpdb;
         $count = $wpdb->get_var($wpdb->prepare(
@@ -89,7 +89,7 @@ class YTS_Database {
         ));
         return $count > 0;
     }
-    
+
     public function get_subscriber($email) {
         global $wpdb;
         return $wpdb->get_row($wpdb->prepare(
@@ -97,7 +97,7 @@ class YTS_Database {
             sanitize_email($email)
         ));
     }
-    
+
     public function update_subscriber_status($email, $status) {
         global $wpdb;
         return $wpdb->update(
@@ -106,7 +106,7 @@ class YTS_Database {
             array('email' => sanitize_email($email))
         );
     }
-    
+
     public function get_active_subscribers($limit = null, $offset = 0) {
         global $wpdb;
         $sql = "SELECT * FROM {$this->subscribers_table} WHERE status = 'active' ORDER BY subscribed_date DESC";
@@ -115,7 +115,7 @@ class YTS_Database {
         }
         return $wpdb->get_results($sql);
     }
-    
+
     public function get_subscriber_count($status = 'active') {
         global $wpdb;
         return $wpdb->get_var($wpdb->prepare(
@@ -123,23 +123,23 @@ class YTS_Database {
             $status
         ));
     }
-    
+
     // Analytics methods
     public function log_analytics($action_type, $data = array()) {
         global $wpdb;
-        
+
         $defaults = array(
             'post_id' => get_the_ID(),
             'video_id' => null,
             'additional_data' => null
         );
-        
+
         $data = wp_parse_args($data, $defaults);
-        
+
         if (is_array($data['additional_data'])) {
             $data['additional_data'] = json_encode($data['additional_data']);
         }
-        
+
         return $wpdb->insert($this->analytics_table, array(
             'action_type' => $action_type,
             'post_id' => $data['post_id'],
@@ -147,12 +147,12 @@ class YTS_Database {
             'additional_data' => $data['additional_data']
         ));
     }
-    
+
     public function get_analytics_count($action_type = null, $start_date = null, $end_date = null) {
         global $wpdb;
         $where = array();
         $where_values = array();
-        
+
         if ($action_type) {
             $where[] = "action_type = %s";
             $where_values[] = $action_type;
@@ -165,16 +165,16 @@ class YTS_Database {
             $where[] = "created_at <= %s";
             $where_values[] = $end_date;
         }
-        
+
         $sql = "SELECT COUNT(*) FROM {$this->analytics_table}";
         if (!empty($where)) {
             $sql .= " WHERE " . implode(' AND ', $where);
             $sql = $wpdb->prepare($sql, $where_values);
         }
-        
+
         return $wpdb->get_var($sql);
     }
-    
+
     private function get_user_ip() {
         $ip_keys = array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR');
         foreach ($ip_keys as $key) {
@@ -188,3 +188,5 @@ class YTS_Database {
         return 'UNKNOWN';
     }
 }
+}
+?>
