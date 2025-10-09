@@ -618,3 +618,29 @@
         opacity: 1;
     }
 }
+
+/* ===== NUCLEAR OPTION - FORCE MINIMAL COLORS ===== */
+/* These are at the END of the file for maximum specificity */
+.yts-share-buttons .yts-share-button.yts-share-bluesky[class*="share-bluesky"] {
+    background-color: #0085ff !important;
+}
+
+.yts-share-buttons .yts-share-button.yts-share-mastodon[class*="share-mastodon"] {
+    background-color: #6364ff !important;
+}
+
+.yts-style-minimal .yts-share-button.yts-share-bluesky {
+    background-color: #0085ff !important;
+}
+
+.yts-style-minimal .yts-share-button.yts-share-mastodon {
+    background-color: #6364ff !important;
+}
+
+a.yts-share-button.yts-share-bluesky {
+    background: #0085ff !important;
+}
+
+a.yts-share-button.yts-share-mastodon {
+    background: #6364ff !important;
+}

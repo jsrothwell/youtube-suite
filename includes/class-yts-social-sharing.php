@@ -156,9 +156,18 @@ class YTS_Social_Sharing {
         
         $onclick = ($network === 'copy') ? 'return ytsShareCopyLink(this);' : 'return ytsShareWindow(this);';
         
+        // Force inline background color for problematic networks in minimal style
+        $inline_style = '';
+        $button_style = YouTube_Suite::get_setting('share_button_style', 'flat');
+        if ($button_style === 'minimal' && in_array($network, array('bluesky', 'mastodon'))) {
+            $colors = array('bluesky' => '#0085ff', 'mastodon' => '#6364ff');
+            $inline_style = ' style="background-color: ' . $colors[$network] . ' !important;"';
+        }
+        
         $html = '<a href="' . esc_url($share_url) . '" ';
         $html .= 'class="yts-share-button yts-share-' . esc_attr($network) . '" ';
         $html .= 'data-network="' . esc_attr($network) . '" ';
+        $html .= $inline_style;
         $html .= 'onclick="' . $onclick . '" ';
         $html .= 'target="_blank" rel="noopener noreferrer">';
         $html .= '<span class="yts-share-icon"><i class="' . esc_attr($icon) . '"></i></span>';
