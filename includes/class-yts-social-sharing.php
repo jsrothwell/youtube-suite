@@ -124,15 +124,16 @@ class YTS_Social_Sharing {
             'copy' => 'Copy Link'
         );
 
+        // Font Awesome icons
         $icons = array(
-            'facebook' => '📘',
-            'twitter' => '🐦',
-            'linkedin' => '💼',
-            'pinterest' => '📌',
-            'reddit' => '🤖',
-            'whatsapp' => '💬',
-            'email' => '✉️',
-            'copy' => '🔗'
+            'facebook' => 'fab fa-facebook-f',
+            'twitter' => 'fab fa-twitter',
+            'linkedin' => 'fab fa-linkedin-in',
+            'pinterest' => 'fab fa-pinterest-p',
+            'reddit' => 'fab fa-reddit-alien',
+            'whatsapp' => 'fab fa-whatsapp',
+            'email' => 'fas fa-envelope',
+            'copy' => 'fas fa-link'
         );
 
         if (!isset($share_urls[$network])) {
@@ -150,7 +151,7 @@ class YTS_Social_Sharing {
         $html .= 'data-network="' . esc_attr($network) . '" ';
         $html .= 'onclick="' . $onclick . '" ';
         $html .= 'target="_blank" rel="noopener noreferrer">';
-        $html .= '<span class="yts-share-icon">' . $icon . '</span>';
+        $html .= '<span class="yts-share-icon"><i class="' . esc_attr($icon) . '"></i></span>';
         $html .= '<span class="yts-share-text">' . esc_html($label) . '</span>';
         
         if ($show_counts) {
@@ -187,7 +188,7 @@ class YTS_Social_Sharing {
         $html = '<div class="yts-click-to-tweet yts-ctt-' . esc_attr($atts['style']) . '">';
         $html .= '<div class="yts-ctt-text">' . wp_kses_post($content) . '</div>';
         $html .= '<a href="' . esc_url($twitter_url) . '" class="yts-ctt-button" target="_blank" rel="noopener noreferrer" onclick="return ytsShareWindow(this);">';
-        $html .= '🐦 ' . __('Click to Tweet', 'youtube-suite');
+        $html .= '<i class="fab fa-twitter"></i> ' . __('Click to Tweet', 'youtube-suite');
         $html .= '</a></div>';
 
         return $html;

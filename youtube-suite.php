@@ -159,6 +159,14 @@ class YouTube_Suite {
     }
 
     public function enqueue_frontend_assets() {
+        // Font Awesome for social icons
+        wp_enqueue_style(
+            'font-awesome',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+            array(),
+            '6.4.0'
+        );
+
         // Combined CSS
         wp_enqueue_style(
             'yts-frontend',
@@ -172,7 +180,7 @@ class YouTube_Suite {
             wp_enqueue_style(
                 'yts-social-sharing',
                 YTS_PLUGIN_URL . 'assets/css/social-sharing.css',
-                array(),
+                array('font-awesome'),
                 YTS_VERSION
             );
         }

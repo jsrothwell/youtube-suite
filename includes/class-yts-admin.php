@@ -541,6 +541,8 @@ class YTS_Admin {
                                     <option value="flat" <?php selected($g('share_button_style', 'flat'), 'flat'); ?>><?php _e('Flat (Solid Colors)', 'youtube-suite'); ?></option>
                                     <option value="gradient" <?php selected($g('share_button_style', 'flat'), 'gradient'); ?>><?php _e('Gradient', 'youtube-suite'); ?></option>
                                     <option value="outlined" <?php selected($g('share_button_style', 'flat'), 'outlined'); ?>><?php _e('Outlined', 'youtube-suite'); ?></option>
+                                    <option value="pill" <?php selected($g('share_button_style', 'flat'), 'pill'); ?>><?php _e('Pills (Rounded)', 'youtube-suite'); ?></option>
+                                    <option value="minimal" <?php selected($g('share_button_style', 'flat'), 'minimal'); ?>><?php _e('Minimal (Icons Only)', 'youtube-suite'); ?></option>
                                 </select>
                                 <p class="description"><?php _e('Visual style of share buttons', 'youtube-suite'); ?></p>
                             </td>
